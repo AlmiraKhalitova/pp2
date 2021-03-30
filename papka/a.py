@@ -1,0 +1,6 @@
+n = int(input())
+a = tuple(map(int, input().split()))
+b = tuple(map(int, input().split()))
+c = tuple(map(int, input().split()))
+zipped = tuple(x+y+z for x, y, z in zip(a, b, c))
+print(zipped)

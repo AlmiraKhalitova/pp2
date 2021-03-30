@@ -1,0 +1,5 @@
+input = open('input.txt')
+output = open('output.txt', 'w')
+lines = input.readlines()
+if len(lines) == 0: output.write('No')
+else: output.write('Good\n'+str(len(lines)))
