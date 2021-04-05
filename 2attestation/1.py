@@ -29,7 +29,7 @@ while run:
     freq = 3
     amp = 40
     for x in range(width):
-        y = int( (height / 2) + amp * math.sin(freq * ((float(x)/width) * (2 * math.pi) + (speed*time.time()))))
+        y = int( (height / 2) + (amp+40) * math.sin (freq+5)* ((float(x)/width) * (2 * math.pi) + (speed*time.time()))))
         
         surface.set_at((x, y), color)
     for x in range(width):
