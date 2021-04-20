@@ -47,7 +47,6 @@ class Snake:
         self.elements[0][1] += self.dy
 
 class Food:
-
     def __init__(self):
         self.x = random.randint(100, WIDTH - 70)
         self.y = random.randint(100, HEIGHT - 70)
@@ -66,31 +65,51 @@ def collision():
         snake.is_add = True
         food.x = random.randint(50, WIDTH - 70)
         food.y = random.randint(50, HEIGHT - 70)
+    if(food.x in range(snake2.elements[0][0] - 20, snake2.elements[0][0])) and (food.y in range(snake2.elements[0][1] - 20, snake2.elements[0][1])):
+        snake2.is_add = True
+        food.x = random.randint(50, WIDTH - 70)
+        food.y = random.randint(50, HEIGHT - 70)
+    if snake.score == 5:
+            snake.score += 5
+            snake.speed = 4
+
+    if snake.score == 10:
+            snake.score += 10
+            snake.speed = 7
+    if snake.score == 30:
+            snake.score += 15
+            snake.speed = 10
 
 def is_in_walls():
     return snake.elements[0][0] > WIDTH - 25 or snake.elements[0][0] < 30
+def is_in_walls2():
+    return snake2.elements[0][0] > WIDTH - 25 or snake2.elements[0][0] < 30
 
 def game_over():
+    # pygame.display.flip()
     screen.fill((255, 0, 0))
     txt = font.render('GAME OVER!', True, (255, 255, 255))
-    my_score = font.render('Total score: ' + str(snake.score), True, (255, 255, 255))
+    my_score = font.render('Total score1: ' + str(snake.score), True, (255, 255, 255))
+    my_score2 = font.render('Total score2: ' + str(snake2.score), True, (255, 255, 255))
     screen.blit(txt, (200, 200))
     screen.blit(my_score, (200, 300))
+    screen.blit(my_score2, (200, 350))
     pygame.display.flip()
-    time.sleep(3)
+    time.sleep(4)
     pygame.quit()
 
 def show_walls():
     for i in range(0, WIDTH, 15):
         screen.blit(wall_image, (i, 0))
-        screen.blit(wall_image, (i, HEIGHT - 31))
+        screen.blit(wall_image, (i, HEIGHT - 32))
         screen.blit(wall_image, (0, i))
         screen.blit(wall_image, (WIDTH - 32, i))
 
 snake = Snake()
-# W A S D
-
+snake2 = Snake()
+go = True
 food = Food()
+d=5
 
 wall_image = pygame.image.load('wall.png')
 
@@ -101,28 +120,49 @@ while go:
         if event.type == pygame.QUIT:
             go = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                snake.dx = 5
+            if event.key == pygame.K_ESCAPE:
+                go = False
+            if event.key == pygame.K_RIGHT and snake.dx != -d:
+                snake.dx = d
                 snake.dy = 0
-            if event.key == pygame.K_LEFT:
-                snake.dx = -5
+            if event.key == pygame.K_LEFT and snake.dx != d:
+                snake.dx = -d
                 snake.dy = 0
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP and snake.dy != d:
                 snake.dx = 0
-                snake.dy = -5
-            if event.key == pygame.K_DOWN:
+                snake.dy = -d
+            if event.key == pygame.K_DOWN and snake.dy != -d:
                 snake.dx = 0
-                snake.dy = 5
+                snake.dy = d
+
+            if event.key == pygame.K_d and snake2.dx != -d:
+                snake2.dx = d
+                snake2.dy = 0
+            if event.key == pygame.K_a and snake2.dx != d:
+                snake2.dx = -d
+                snake2.dy = 0
+            if event.key == pygame.K_w and snake2.dy != d:
+                snake2.dx = 0
+                snake2.dy = -d
+            if event.key == pygame.K_s and snake2.dy != -d:
+                snake2.dx = 0
+                snake2.dy = d
     
     if is_in_walls():
         game_over()
         go = False
+    if is_in_walls2():
+        game_over()
+        go = False
 
     collision()
-    screen.fill((165,206,216))
+    screen.fill((165, 206, 216))
     snake.move()
     snake.draw()
+    snake2.move()
+    snake2.draw()
     food.draw()
     show_score(35, 45, snake.score)
+    show_score(450, 45, snake2.score)
     show_walls()
     pygame.display.flip()
